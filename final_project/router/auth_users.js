@@ -59,25 +59,26 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     const isbn = req.params.isbn
     const username = req.session.authorization.username
     const review = req.query.review
-    const bookReview = books[isbn].reviews
-    const rev = { "username": username, "review": review }
+    let bookReview = books[isbn].reviews
 
-    Object.assign(bookReview, rev)
-    // console.log(bookReview)
-    res.status(200).send(bookReview);
+    bookReview[username]=review
+    // bookReview.username = username;
+    // bookReview.review = review;
+    res.status(200).send("Review successfully posted");
+
 });
 
 // Delete a book review
 regd_users.delete("/auth/review/:isbn", (req, res) => {
     const isbn = req.params.isbn
     const username = req.session.authorization.username
-    // const bookReview = books[isbn].reviews
-    const bookValues = Object.values(books[isbn].reviews)
-    console.log(bookValues)
-    deleteReview = bookValues.filter((item) => item.username === username )
-    // console.log(bookValues, "\n", deleteReview, "\n")
+    let bookReview = books[isbn].reviews
 
-    res.status(200).send(bookValues);
+    console.log("Console1:","\n",bookReview,"\n",bookReview[username],"\n",bookReview.username,"\n",username,"\n",bookReview.username === username)
+    // delete bookReview.username === username
+    delete bookReview[username]
+    console.log("Console1:","\n",bookReview,"\n",bookReview[username],"\n",bookReview[username] === username)
+    return res.status(200).send("Review successfully deleted");
 })
 
 
