@@ -55,13 +55,18 @@ regd_users.post("/login", (req, res) => {
 
 
 // Add a book review
-regd_users.post("/auth/review/:isbn", (req, res) => {
-
+regd_users.put("/auth/review/:isbn", (req, res) => {
+    const isbn = req.params.isbn
     const username = req.session.authorization.username
-    console.log(username)
-    res.status(200).send(`Username: ${username}`);
-});
+    const review = req.query.review
+    const bookReview = books[isbn].reviews
+    const rev = {"username":username,"review":review}
 
+    Object.assign(bookReview,rev)
+    // console.log(bookReview)
+    res.status(200).send(bookReview);
+});
+ 
 
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
