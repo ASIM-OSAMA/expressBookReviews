@@ -60,13 +60,26 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     const username = req.session.authorization.username
     const review = req.query.review
     const bookReview = books[isbn].reviews
-    const rev = {"username":username,"review":review}
+    const rev = { "username": username, "review": review }
 
-    Object.assign(bookReview,rev)
+    Object.assign(bookReview, rev)
     // console.log(bookReview)
     res.status(200).send(bookReview);
 });
- 
+
+// Delete a book review
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+    const isbn = req.params.isbn
+    const username = req.session.authorization.username
+    // const bookReview = books[isbn].reviews
+    const bookValues = Object.values(books[isbn].reviews)
+    console.log(bookValues)
+    deleteReview = bookValues.filter((item) => item.username === username )
+    // console.log(bookValues, "\n", deleteReview, "\n")
+
+    res.status(200).send(bookValues);
+})
+
 
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
