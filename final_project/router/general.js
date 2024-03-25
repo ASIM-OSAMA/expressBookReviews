@@ -5,6 +5,11 @@ let users = require("./auth_users.js").users;
 const public_users = express.Router()
 const axios = require('axios').default;
 
+// Configure axios base url:
+// NOTE: Replace your USERNAME-PORT with your username and port.
+
+axios.defaults.baseURL = 'https://asimelsanosi-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai'
+
 public_users.post("/register", (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
@@ -39,9 +44,8 @@ async function getBooks(url) {
         console.error(error)
     }
 }
-// // Replace your USERNAME-PORT with your username and port 
-//   asimelsanosi-5000
-// getBooks('https://asimelsanosi-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/')
+
+// getBooks('/')
 
 
 // Get book details based on ISBN
@@ -54,18 +58,13 @@ public_users.get('/isbn/:isbn', (req, res) => {
     }
 })
 
-// Task 11: Get book details based on ISBN
-async function getBookUsingIsbn(url) {
-    try {
-        const res = await axios.get(url)
-        console.log(" Status: ", res.status, res.statusText, "\n", "Data: ", res.data)
-    } catch (error) {
-        console.error(error)
-    }
+// Task 11: Get book details based on ISBN (Promise)
+function getBookUsingIsbn(url) {
+    axios.get(url)
+        .then(res => { console.log(" Status: ", res.status, res.statusText, "\n", "Data: ", res.data) })
+        .catch((err) => { console.error(err) })
 }
-// // Replace your USERNAME-PORT with your username and port 
-//   asimelsanosi-5000
-// getBookUsingIsbn('https://asimelsanosi-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/isbn/10')
+// getBookUsingIsbn('/isbn/10')
 
 
 // Get book details based on author
@@ -82,12 +81,23 @@ public_users.get('/title/:title', function (req, res) {
     const booksValues = Object.values(books)
     const filteredTitle = booksValues.filter((item) => item.title === title)
     res.status(200).send(JSON.stringify(filteredTitle))
-});
+})
+
+// // Task 12, 13: Get book details based on (author,title) (async/await)
+function getBookDetails(url) {
+    axios.get(url)
+        .then(res => { console.log(" Status: ", res.status, res.statusText, "\n", "Data: ", res.data) })
+        .catch((err) => { console.error(err) })
+}
+// getBookDetails('/author/Unknown')
+// getBookDetails('/title/The Divine Comedy')
+
 
 //  Get book review
 public_users.get('/review/:isbn', function (req, res) {
     const isbn = req.params.isbn
     res.status(200).send(JSON.stringify(books[isbn].reviews))
 });
+
 
 module.exports.general = public_users;
