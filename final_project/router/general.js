@@ -8,7 +8,7 @@ const axios = require('axios').default;
 // Configure axios base url:
 // NOTE: Replace your USERNAME-PORT with your username and port.
 
-axios.defaults.baseURL = 'https://asimelsanosi-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai'
+axios.defaults.baseURL = 'https://USERNAME-PORT.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai'
 
 public_users.post("/register", (req, res) => {
     const username = req.body.username
