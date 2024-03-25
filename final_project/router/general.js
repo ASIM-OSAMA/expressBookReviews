@@ -11,8 +11,8 @@ const axios = require('axios').default;
 axios.defaults.baseURL = 'https://asimelsanosi-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai'
 
 public_users.post("/register", (req, res) => {
-    const username = req.body.username;
-    const password = req.body.password;
+    const username = req.body.username
+    const password = req.body.password
 
     if (username && password) {
         if (!isValid(username)) {
